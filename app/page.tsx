@@ -32,8 +32,6 @@ const Home: React.FC = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true);
 
-  const userLocation = location.latitude !== 0 && location.longitude !== 0
-
   useEffect(() => {
     // Obter a geolocalização do usuário
     if (navigator.geolocation) {
