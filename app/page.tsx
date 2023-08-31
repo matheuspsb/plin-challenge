@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getFormattedDateWithTimeZone } from "./utils/dateUtils";
+import { getFormattedDateWithTimeZone } from "../utils/dateUtils";
 import WeatherCard from "../components/WeatherCard";
 
 interface WeatherData {
@@ -31,6 +31,8 @@ const Home: React.FC = () => {
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true);
+
+  const userLocation = location.latitude !== 0 && location.longitude !== 0
 
   useEffect(() => {
     // Obter a geolocalização do usuário
@@ -71,7 +73,11 @@ const Home: React.FC = () => {
   return (
     <div>
       <div className="bg-white/25 w-full flex justify-center items-center flex-col h-screen">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-4 text-center sm:text-start">Informações climáticas:</h1>
+        {location.latitude !== 0 && location.longitude !== 0 ? (
+          <h1 className="text-3xl font-semibold text-gray-800 mb-4 text-center sm:text-start">Informações climáticas:</h1>      
+        ) : (
+          <h1 className="text-2xl font-semibold text-gray-800 mb-4 text-center sm:text-start">Aceite compartilhar sua localização:</h1>
+        )}
         <div className="flex justify-center items-center p-6 w-full h-96 border-2 border-white-300 rounded-3xl drop-shadow-primary max-w-lg">
           {loading ? ( 
               <p>Carregando...</p>

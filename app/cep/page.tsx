@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { states } from "../utils/states";
+import { states } from "../../utils/states";
 import InputWithLabel from "@/components/InputWithIcon";
 
 interface CepData {
