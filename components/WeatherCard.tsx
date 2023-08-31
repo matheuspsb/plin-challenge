@@ -17,10 +17,10 @@ interface WeatherCardProps {
 const WeatherCard: React.FC<WeatherCardProps> = ({ city, date, temperature, max_temperature, min_temperature, main, description, visibility, humidity, windSpeed, icon }) => {
   return (
         <div className="flex flex-col">
-            <h1 className="text-4xl font-semibold mb-2">{city}</h1>
+            <h1 className="text-3xl font-semibold mb-2 md:text-4xl">{city}</h1>
             <h4 className="text-sm text-gray-500">{date}</h4>
             <div className="flex flex-row items-center justify-center mt-6">
-                <h4 className="font-medium  text-6xl">{Math.round(temperature)}°</h4>
+                <h4 className="font-medium text-6xl">{Math.round(temperature)}°</h4>
                 <div className="flex flex-col items-center ml-6">
                     <p>{main}</p>
                     <div className="mt-1">

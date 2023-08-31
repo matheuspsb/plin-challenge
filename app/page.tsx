@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { getFormattedDateWithTimeZone } from "./utils/dateUtils";
-import WeatherCard from "./components/WeatherCard";
+import WeatherCard from "../components/WeatherCard";
 
 interface WeatherData {
   id: number;
@@ -30,6 +30,7 @@ interface WeatherData {
 const Home: React.FC = () => {
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [weather, setWeather] = useState<WeatherData | null>(null)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Obter a geolocalização do usuário
@@ -56,36 +57,41 @@ const Home: React.FC = () => {
       )
         .then((response) => response.json())
         .then((data: WeatherData) => {
-          console.log(data)
           const formattedDate = getFormattedDateWithTimeZone(data.dt, data.timezone);
           setWeather({...data, formattedDate });
+          setLoading(false);
         })
         .catch((error) => {
           console.error(error);
+          setLoading(false);
         });
     }
   }, [location]);
 
   return (
     <div>
-      <h1 className="text-4xl font-semibold text-gray-800 mt-8 ml-8">Weather Page</h1>
-      <div className="bg-white/25 w-full rounded-lg flex justify-center items-center flex-col h-screen">
-        <div className="flex justify-center items-center p-16 border-2 border-white-300 rounded-3xl drop-shadow-primary max-w-lg">
-          {weather && ( 
-            <WeatherCard
-              city={weather.name}
-              main={weather.weather[0].main}
-              date={weather.formattedDate}
-              temperature={Math.round(weather.main.temp)}
-              max_temperature={Math.round(weather.main.temp_max)}
-              min_temperature={Math.round(weather.main.temp_min)}
-              description={weather.weather[0].description}
-              humidity={weather.main.humidity}
-              icon={weather.weather[0].icon}
-              windSpeed={weather.wind.speed}
-              visibility={(weather.visibility / 1000)}
-            />
-          )}
+      <div className="bg-white/25 w-full flex justify-center items-center flex-col h-screen">
+        <h1 className="text-3xl font-semibold text-gray-800 mb-4 text-center sm:text-start">Informações climáticas:</h1>
+        <div className="flex justify-center items-center p-6 w-full h-96 border-2 border-white-300 rounded-3xl drop-shadow-primary max-w-lg">
+          {loading ? ( 
+              <p>Carregando...</p>
+            ) : weather ? ( 
+              <WeatherCard
+                city={weather.name}
+                main={weather.weather[0].main}
+                date={weather.formattedDate}
+                temperature={Math.round(weather.main.temp)}
+                max_temperature={Math.round(weather.main.temp_max)}
+                min_temperature={Math.round(weather.main.temp_min)}
+                description={weather.weather[0].description}
+                humidity={weather.main.humidity}
+                icon={weather.weather[0].icon}
+                windSpeed={weather.wind.speed}
+                visibility={(weather.visibility / 1000)}
+              />
+            ) : (
+              <p>Não foi possível obter os dados climáticos.</p>
+            )}
         </div>
       </div>
     </div>
